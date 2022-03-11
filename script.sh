@@ -45,9 +45,38 @@ do
 numberDirectory=$(( i + 1 ))
 echo "$numberDirectory. ${foundDirectory[i]}"
 done
-echo "Select the desired directory from the list..."
+while read -p "Select the desired directory from the list: ";
+do
+selectedNumber=$REPLY
+for (( i=0; i<${#foundDirectory[@]}; i++ ));
+do
+numberDirectory=$(( i + 1 ))
+if [[ ${selectedNumber} -eq ${numberDirectory} ]];
+then
+echo "All files in this directory:"
+find ${foundDirectory[selectedNumber - 1]} -user ${userName}
+while read -p "Do you want to continue? (y/n): ";
+do
+answer=$REPLY
+if [[ "$answer" = "y" ]];
+then
+break
+fi
+if [[ "$answer" = "n" ]];
+then
+exit
+fi
+done
+fi
+#echo "$numberDirectory. ${foundDirectory[i]}"
+done
+if [[ "$answer" = "y" ]];
+then
+break
+fi
+done
 fi
 else 
-echo "This directorydoes not exist..."
+echo "This directory does not exist..."
 fi
 done
